@@ -168,12 +168,22 @@ export default function EditTab({
               <Button variant="outline" onClick={addOption}>
                 <Plus className="w-4 h-4 mr-1" />選択肢を追加
               </Button>
-              <div>
+              <div className="space-y-1">
                 <input ref={fileRef} type="file" accept=".csv" className="hidden" onChange={handleImportCsv} />
-                <Button variant="outline" onClick={() => fileRef.current?.click()}>
-                  <Upload className="w-4 h-4 mr-1" />CSVインポート
-                </Button>
-              </div>
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" onClick={() => fileRef.current?.click()}>
+                    <Upload className="w-4 h-4 mr-1" />CSVインポート
+                  </Button>
+                  <a
+                    href="/options-template.csv"
+                    download
+                    className="text-xs text-blue-600 underline"
+                  >
+                    テンプレート
+                  </a>
+                </div>
+                <p className="text-xs opacity-60">CSVはlabel,weight,color,icon,descriptionの列を含む必要があります</p>
+
             </div>
           </div>
 
