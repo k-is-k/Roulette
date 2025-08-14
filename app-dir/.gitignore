@@ -18,6 +18,25 @@
 .env.test.local
 .env.production.local
 
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# editor directories and files
+.vscode/
+.idea/
+
+# TypeScript
+*.tsbuildinfo
+
+# React / CRA cache
+.eslintcache
+
+# OS-specific
+Thumbs.db
+
+# env files (keep secrets out of git)
+.env
