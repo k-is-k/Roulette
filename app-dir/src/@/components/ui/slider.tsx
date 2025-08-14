@@ -8,7 +8,7 @@ type Props = {
   onValueChange?: (v: [number]) => void;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-export const Slider: React.FC<Props> = ({ value, min, max, step, onValueChange, ...rest }) => {
+export const Slider: React.FC<Props> = ({ value, min, max, step, onValueChange, className = "", ...rest }) => {
   const v = value?.[0] ?? 0;
   return (
     <input
@@ -18,10 +18,10 @@ export const Slider: React.FC<Props> = ({ value, min, max, step, onValueChange, 
       max={max}
       step={step}
       onChange={(e) => onValueChange?.([Number(e.target.value)])}
+      className={["w-full accent-indigo-600", className].join(" ")}
       {...rest}
     />
   );
 };
 
 export default Slider;
-
