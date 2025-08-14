@@ -183,7 +183,7 @@ export default function EditTab({
                   </a>
                 </div>
                 <p className="text-xs opacity-60">CSVはlabel,weight,color,icon,descriptionの列を含む必要があります</p>
-              </div>
+
             </div>
           </div>
 
