@@ -89,8 +89,8 @@ const Roulette = memo(function Roulette({
         </div>
         {/* pin */}
         <div
-          className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[12px] border-r-[12px] border-b-[18px] border-l-transparent border-r-transparent"
-          style={{ borderBottomColor: highContrast ? "white" : "#111" }}
+          className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[12px] border-r-[12px] border-t-[18px] border-l-transparent border-r-transparent"
+          style={{ borderTopColor: highContrast ? "white" : "#111" }}
         />
       </div>
     </div>
