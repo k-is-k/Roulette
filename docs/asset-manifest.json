@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/Roulette/static/css/main.642676eb.css",
-    "main.js": "/Roulette/static/js/main.826856eb.js",
+    "main.css": "/Roulette/static/css/main.b9b214cc.css",
+    "main.js": "/Roulette/static/js/main.c2c31c6a.js",
     "index.html": "/Roulette/index.html",
-    "main.642676eb.css.map": "/Roulette/static/css/main.642676eb.css.map",
-    "main.826856eb.js.map": "/Roulette/static/js/main.826856eb.js.map"
+    "main.b9b214cc.css.map": "/Roulette/static/css/main.b9b214cc.css.map",
+    "main.c2c31c6a.js.map": "/Roulette/static/js/main.c2c31c6a.js.map"
   },
   "entrypoints": [
-    "static/css/main.642676eb.css",
-    "static/js/main.826856eb.js"
+    "static/css/main.b9b214cc.css",
+    "static/js/main.c2c31c6a.js"
   ]
 }
