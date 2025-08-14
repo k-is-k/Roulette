@@ -4,7 +4,7 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Plus, Settings, History as HistoryIcon } from "lucide-react";
+import { Plus, Settings, History as HistoryIcon, Trash2 } from "lucide-react";
 import type { Project } from "../types";
 
 type Props = {
@@ -12,6 +12,7 @@ type Props = {
   activeId: string;
   setActiveId: (id: string) => void;
   onCreateProject: () => void;
+  onDeleteProject: (id: string) => void;
   onToggleSound: () => void;
   onToggleHaptics: () => void;
   onToggleHighContrast: () => void;
@@ -25,6 +26,7 @@ export default function HeaderBar({
   activeId,
   setActiveId,
   onCreateProject,
+  onDeleteProject,
   onToggleSound,
   onToggleHaptics,
   onToggleHighContrast,
@@ -63,9 +65,22 @@ export default function HeaderBar({
                     onClick={() => setActiveId(p.id)}
                   >
                     <CardHeader className="py-3">
-                      <CardTitle className="text-base flex items-center justify-between">
-                        <span>{p.name}</span>
-                        <span className="text-xs opacity-70">{new Date(p.updatedAt).toLocaleString()}</span>
+                      <CardTitle className="text-base flex items-center justify-between gap-3">
+                        <span className="truncate">{p.name}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs opacity-70 whitespace-nowrap">{new Date(p.updatedAt).toLocaleString()}</span>
+                          <button
+                            aria-label="削除"
+                            className="p-1 rounded-md hover:bg-black/5 dark:hover:bg-white/10"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              const ok = window.confirm(`『${p.name}』を削除しますか？この操作は元に戻せません。`);
+                              if (ok) onDeleteProject(p.id);
+                            }}
+                          >
+                            <Trash2 className="w-4 h-4 opacity-70" />
+                          </button>
+                        </div>
                       </CardTitle>
                     </CardHeader>
                   </Card>

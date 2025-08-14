@@ -63,6 +63,22 @@ export default function App() {
 
   const equalize = useCallback(() => updateOptions((opts) => opts.map((o) => ({ ...o, weight: 1 }))), [updateOptions]);
 
+  const deleteProject = useCallback(
+    (id: string) => {
+      setProjects((prev) => {
+        const next = prev.filter((p) => p.id !== id);
+        if (next.length === 0) {
+          const d = DEFAULT_PROJECT();
+          setActiveId(d.id);
+          return [d];
+        }
+        if (id === activeId) setActiveId(next[0].id);
+        return next;
+      });
+    },
+    [activeId]
+  );
+
   const normalizePercent = useCallback(() => {
     const probs = normalizeWeights(active.options.map((o) => o.weight));
     const percents = percentRoundTo100(probs.map((p) => p * 100));
@@ -203,6 +219,7 @@ export default function App() {
           activeId={activeId}
           setActiveId={setActiveId}
           onCreateProject={() => setProjects((prev) => [DEFAULT_PROJECT(), ...prev])}
+          onDeleteProject={deleteProject}
           onToggleSound={() => patchActive({ settings: { ...active.settings, sound: !active.settings.sound } })}
           onToggleHaptics={() => patchActive({ settings: { ...active.settings, haptics: !active.settings.haptics } })}
           onToggleHighContrast={() => patchActive({ settings: { ...active.settings, highContrast: !active.settings.highContrast } })}
