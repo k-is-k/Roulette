@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Roulette/static/css/main.fdd20d5f.css",
+    "main.js": "/Roulette/static/js/main.147d5412.js",
+    "index.html": "/Roulette/index.html",
+    "main.fdd20d5f.css.map": "/Roulette/static/css/main.fdd20d5f.css.map",
+    "main.147d5412.js.map": "/Roulette/static/js/main.147d5412.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fdd20d5f.css",
+    "static/js/main.147d5412.js"
+  ]
+}
