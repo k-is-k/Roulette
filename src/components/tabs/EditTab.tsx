@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,8 +8,8 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import RoulettePreview from "../../components/RoulettePreview";
 import type { Project, Option } from "../../types";
-import { safeNumber } from "../../utils";
-import { Equal, Plus, Trash2 } from "lucide-react";
+import { safeNumber, randomNiceColor, uid } from "../../utils";
+import { Equal, Plus, Trash2, Upload } from "lucide-react";
 
 type Props = {
   active: Project;
@@ -47,6 +47,44 @@ export default function EditTab({
   targetAngle,
 }: Props) {
   const [preview, setPreview] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const parseLine = (line: string) =>
+    line
+      .split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/)
+      .map((s) => s.replace(/^"|"$/g, "").replace(/""/g, '"').trim());
+
+  const handleImportCsv = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const text = (await file.text()).replace(/\uFEFF/g, "");
+    const lines = text.split(/\r?\n/).filter((l) => l.trim().length > 0);
+    if (!lines.length) return;
+    const header = parseLine(lines[0].toLowerCase());
+    const keys = ["label", "weight", "color", "icon", "description"];
+    const hasHeader = header.some((h) => keys.includes(h));
+    const idx = {
+      label: hasHeader ? header.indexOf("label") : 0,
+      weight: hasHeader ? header.indexOf("weight") : 1,
+      color: hasHeader ? header.indexOf("color") : 2,
+      icon: hasHeader ? header.indexOf("icon") : 3,
+      description: hasHeader ? header.indexOf("description") : 4,
+    };
+    const start = hasHeader ? 1 : 0;
+    const opts: Option[] = [];
+    for (let i = start; i < lines.length; i++) {
+      const cols = parseLine(lines[i]);
+      const label = cols[idx.label]?.trim();
+      if (!label) continue;
+      const weight = safeNumber(cols[idx.weight], 1);
+      const color = cols[idx.color] || randomNiceColor();
+      const icon = cols[idx.icon] || "";
+      const description = cols[idx.description] || "";
+      opts.push({ id: uid(), label, weight, color, icon, description });
+    }
+    if (opts.length) updateOptions((prev) => [...prev, ...opts]);
+    if (fileRef.current) fileRef.current.value = "";
+  };
 
   return (
     <div className="grid md:grid-cols-5 gap-4">
@@ -126,9 +164,27 @@ export default function EditTab({
                 )}
               </div>
             ))}
-            <Button variant="outline" onClick={addOption}>
-              <Plus className="w-4 h-4 mr-1" />選択肢を追加
-            </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={addOption}>
+                <Plus className="w-4 h-4 mr-1" />選択肢を追加
+              </Button>
+              <div className="space-y-1">
+                <input ref={fileRef} type="file" accept=".csv" className="hidden" onChange={handleImportCsv} />
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" onClick={() => fileRef.current?.click()}>
+                    <Upload className="w-4 h-4 mr-1" />CSVインポート
+                  </Button>
+                  <a
+                    href="/options-template.csv"
+                    download
+                    className="text-xs text-blue-600 underline"
+                  >
+                    テンプレート
+                  </a>
+                </div>
+                <p className="text-xs opacity-60">CSVはlabel,weight,color,icon,descriptionの列を含む必要があります</p>
+              </div>
+            </div>
           </div>
 
           {invalidReason && <div className="text-sm text-red-600">{invalidReason}</div>}
